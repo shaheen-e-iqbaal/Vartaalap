@@ -1,7 +1,7 @@
-package com.example.springdemo.Service;
+package com.example.Vartaalap.Service;
 
-import com.example.springdemo.DTO.ArticleDTO;
-import com.example.springdemo.Repository.ArticleRepository;
+import com.example.Vartaalap.DTO.ArticleDTO;
+import com.example.Vartaalap.Repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

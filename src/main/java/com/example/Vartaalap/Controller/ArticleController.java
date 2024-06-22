@@ -1,8 +1,8 @@
-package com.example.springdemo.Controller;
+package com.example.Vartaalap.Controller;
 
 
-import com.example.springdemo.DTO.ArticleDTO;
-import com.example.springdemo.Service.ArticleService;
+import com.example.Vartaalap.DTO.ArticleDTO;
+import com.example.Vartaalap.Service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;

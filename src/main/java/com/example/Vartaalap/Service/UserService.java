@@ -1,8 +1,7 @@
-package com.example.springdemo.Service;
+package com.example.Vartaalap.Service;
 
-import com.example.springdemo.DTO.UserDTO;
-import com.example.springdemo.Repository.UserRepository;
-import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
+import com.example.Vartaalap.DTO.UserDTO;
+import com.example.Vartaalap.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class UserService {
     }
 
     public UserDTO save (UserDTO userDTO){
-        if(findByEmailIdOrPassword(userDTO.getEmailId(),userDTO.getPassword()) == true)return null;
+        if(findByEmailIdOrPassword(userDTO.getEmailId(),userDTO.getPassword()))return null;
         return userRepository.save(userDTO);
     }
 
@@ -27,11 +26,11 @@ public class UserService {
     }
 
     public boolean findByEmailIdAndPassword(String email, String password){
-        return userRepository.findByEmailIdAndPassword(email,password).size() > 0 ? true : false;
+        return userRepository.findByEmailIdAndPassword(email,password).size() > 0;
     }
 
     public boolean findByEmailIdOrPassword(String email, String password){
-        return userRepository.findByEmailIdOrPassword(email,password).size() > 0 ? true : false;
+        return userRepository.findByEmailIdOrPassword(email,password).size() > 0;
     }
 
     public List<UserDTO> findAll(){

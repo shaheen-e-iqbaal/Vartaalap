@@ -1,9 +1,7 @@
-package com.example.springdemo.Repository;
+package com.example.Vartaalap.Repository;
 
-import com.example.springdemo.DTO.ArticleDTO;
-import jakarta.transaction.Transactional;
+import com.example.Vartaalap.DTO.ArticleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;

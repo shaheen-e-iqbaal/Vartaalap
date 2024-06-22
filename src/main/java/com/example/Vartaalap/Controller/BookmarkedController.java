@@ -1,7 +1,7 @@
-package com.example.springdemo.Controller;
+package com.example.Vartaalap.Controller;
 
 
-import com.example.springdemo.Service.BookmarkedService;
+import com.example.Vartaalap.Service.BookmarkedService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

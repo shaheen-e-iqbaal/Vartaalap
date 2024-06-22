@@ -1,4 +1,4 @@
-package com.example.springdemo;
+package com.example.Vartaalap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

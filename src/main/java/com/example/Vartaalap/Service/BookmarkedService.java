@@ -1,11 +1,8 @@
-package com.example.springdemo.Service;
+package com.example.Vartaalap.Service;
 
-import com.example.springdemo.DTO.BookmarkedDTO;
-import com.example.springdemo.Repository.BookmarkedRepository;
-import org.springframework.beans.factory.config.CustomScopeConfigurer;
+import com.example.Vartaalap.Repository.BookmarkedRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,19 +21,18 @@ public class BookmarkedService {
 
     public boolean isAlreadyBookmarked(int userId, int articleId){
         List<Integer> res = bookmarkedRepository.isAlreadyBookmarked(userId, articleId);
-        if(res.size() > 0)return true;
-        return false;
+        return res.size() > 0;
     }
 
     public String BookmarkArticle (int userId, int articleId){
         boolean check = isAlreadyBookmarked(userId, articleId);
-        if(check == true)return "This article is already Bookmarked by user";
+        if(check)return "This article is already Bookmarked by user";
         bookmarkedRepository.BookmarkArticle(userId, articleId);
         return "Article Bookmarked Succesfully";
     }
 
     public String unBookmark(int userId, int articleId){
-        if(isAlreadyBookmarked(userId, articleId) == true){
+        if(isAlreadyBookmarked(userId, articleId)){
             bookmarkedRepository.deleteByUserIdAndArticleId(userId, articleId);
             return "Removed from Bookmarked Successfully";
         }

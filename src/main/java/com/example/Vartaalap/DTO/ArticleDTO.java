@@ -1,4 +1,4 @@
-package com.example.springdemo.DTO;
+package com.example.Vartaalap.DTO;
 
 
 import jakarta.persistence.*;

@@ -1,10 +1,8 @@
-package com.example.springdemo.Service;
+package com.example.Vartaalap.Service;
 
 
-import com.example.springdemo.DTO.FollowRelationsDTO;
-import com.example.springdemo.Repository.FollowRelationsRepository;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.Vartaalap.DTO.FollowRelationsDTO;
+import com.example.Vartaalap.Repository.FollowRelationsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,8 +37,7 @@ public class FollowRelationsService {
 
     public Boolean isFollowing(int whoIsFollowing, int whoIsBeingFollowed){
         int sz = followRelationsRepository.findByWhoIsFollowingAndWhoIsBeingFollowed(whoIsFollowing,whoIsBeingFollowed).size();
-        if(sz == 1)return true;
-        return false;
+        return sz == 1;
     }
 
     public String follow (int whoIsFollowing, int whoIsBeingFollowed){

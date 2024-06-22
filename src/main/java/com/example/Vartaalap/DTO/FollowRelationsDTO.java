@@ -1,9 +1,8 @@
-package com.example.springdemo.DTO;
+package com.example.Vartaalap.DTO;
 
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Entity
 @Data

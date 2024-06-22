@@ -1,13 +1,9 @@
-package com.example.springdemo.DTO;
+package com.example.Vartaalap.DTO;
 
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter

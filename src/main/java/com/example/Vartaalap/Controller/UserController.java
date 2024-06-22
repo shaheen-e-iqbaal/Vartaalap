@@ -1,24 +1,19 @@
-package com.example.springdemo.Controller;
+package com.example.Vartaalap.Controller;
 
-import com.example.springdemo.DTO.UserDTO;
-import com.example.springdemo.Service.BookmarkedService;
-import com.example.springdemo.Service.FollowRelationsService;
-import com.example.springdemo.Service.UserService;
-import org.apache.catalina.User;
+import com.example.Vartaalap.DTO.UserDTO;
+import com.example.Vartaalap.Service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
+
 
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
 
     UserService userService;
-    FollowRelationsService followRelationsService;
-    public UserController(UserService userService, FollowRelationsService followRelationsService){
+    public UserController(UserService userService){
         this.userService = userService;
-        this.followRelationsService = followRelationsService;
     }
 
     @PostMapping(path = "/saveUser")

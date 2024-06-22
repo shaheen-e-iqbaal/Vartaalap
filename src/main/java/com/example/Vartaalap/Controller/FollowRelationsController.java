@@ -1,6 +1,6 @@
-package com.example.springdemo.Controller;
+package com.example.Vartaalap.Controller;
 
-import com.example.springdemo.Service.FollowRelationsService;
+import com.example.Vartaalap.Service.FollowRelationsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

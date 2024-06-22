@@ -1,6 +1,6 @@
-package com.example.springdemo.Repository;
+package com.example.Vartaalap.Repository;
 
-import com.example.springdemo.DTO.FollowRelationsDTO;
+import com.example.Vartaalap.DTO.FollowRelationsDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
