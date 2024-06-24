@@ -45,5 +45,11 @@ public class UserController {
 
     //DEVELOP MEPPING TO UPDATE USER DETAILS AND TO DELETE USER
 
+    @PutMapping(path = "updateuser")
+    public UserDTO update(@RequestParam int userId, @RequestBody UserDTO userDTO){
+        userDTO.setUserId(userId);
+        return userService.save(userDTO);
+    }
+
 
 }

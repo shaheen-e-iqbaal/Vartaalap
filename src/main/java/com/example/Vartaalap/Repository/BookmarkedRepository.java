@@ -25,4 +25,8 @@ public interface BookmarkedRepository extends JpaRepository<BookmarkedDTO, Long>
     @Modifying
     @Transactional
     public void deleteByUserIdAndArticleId(int userId, int articleId);
+
+    @Modifying
+    @Transactional
+    public void deleteByArticleId(int articleId);
 }

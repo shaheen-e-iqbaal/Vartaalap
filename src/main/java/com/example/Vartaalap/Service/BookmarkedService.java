@@ -41,4 +41,8 @@ public class BookmarkedService {
         }
 
     }
+
+    public void deleteByArticleId(int articleId){
+        bookmarkedRepository.deleteByArticleId(articleId);
+    }
 }
