@@ -39,4 +39,6 @@ public interface ArticleRepository extends JpaRepository<ArticleDTO, Long> {
     //Method to get All Articles
     List<ArticleDTO> findAll();
 
+
+
 }

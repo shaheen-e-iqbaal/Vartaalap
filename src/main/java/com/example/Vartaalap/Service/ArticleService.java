@@ -5,12 +5,12 @@ import com.example.Vartaalap.DTO.LikesDTO;
 import com.example.Vartaalap.DTO.TagDTO;
 import com.example.Vartaalap.Repository.ArticleRepository;
 import com.example.Vartaalap.Repository.LikesRepository;
-import org.springframework.core.metrics.StartupStep;
+import com.example.Vartaalap.Repository.TagRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -18,10 +18,14 @@ public class ArticleService {
     ArticleRepository articleRepository;
     BookmarkedService bookmarkedService;
     LikesRepository likesRepository;
-    public ArticleService(ArticleRepository articleRepository, BookmarkedService bookmarkedService, LikesRepository likesRepository){
+    TagRepository tagRepository;
+
+    public ArticleService(ArticleRepository articleRepository, BookmarkedService bookmarkedService,
+                          LikesRepository likesRepository, TagRepository tagRepository){
         this.bookmarkedService = bookmarkedService;
         this.articleRepository = articleRepository;
         this.likesRepository = likesRepository;
+        this.tagRepository = tagRepository;
     }
 
     //Method to save the article
@@ -70,6 +74,7 @@ public class ArticleService {
 
     //Method to update the Tags of article
     @Modifying
+    @Transactional
     public ArticleDTO updateArticleTags(int articleId, List<TagDTO> tags){
         ArticleDTO articleDTO = articleRepository.findByArticleId(articleId);
 
@@ -88,6 +93,8 @@ public class ArticleService {
 
 
     //Method to add Likes to article
+    @Modifying
+    @Transactional
     public ArticleDTO addArticleLikes(int articleId, List<LikesDTO> likes){
         ArticleDTO articleDTO = articleRepository.findByArticleId(articleId);
         Set<LikesDTO> st = new HashSet<>(articleDTO.getLikes());
@@ -102,6 +109,8 @@ public class ArticleService {
     }
 
     //Method to remove likes from article
+    @Modifying
+    @Transactional
     public ArticleDTO removeArticleLikes(int articleId, List<LikesDTO> likes){
 
         ArticleDTO articleDTO = articleRepository.findByArticleId(articleId);
@@ -117,6 +126,26 @@ public class ArticleService {
 
         return articleRepository.save(articleDTO);
 
+    }
+
+    //Method to get Article with tag
+    public List<ArticleDTO> findByTag(String tag){
+        List<ArticleDTO> ans = new ArrayList<>();
+        List<TagDTO> resp = tagRepository.findByTag(tag);
+        for(TagDTO tagDTO : resp){
+            ans.add(tagDTO.getArticleDTO());
+        }
+        return ans;
+    }
+
+    //Method to get articled liked by User
+    public List<ArticleDTO> findByUserId(int userId){
+        List<ArticleDTO> ans = new ArrayList<>();
+        List<LikesDTO> resp = likesRepository.findByUserId(userId);
+        for(LikesDTO likesDTO: resp){
+            ans.add(likesDTO.getArticleDTO());
+        }
+        return ans;
     }
 
 

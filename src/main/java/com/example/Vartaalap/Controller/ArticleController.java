@@ -4,6 +4,7 @@ package com.example.Vartaalap.Controller;
 import com.example.Vartaalap.DTO.ArticleDTO;
 import com.example.Vartaalap.DTO.LikesDTO;
 import com.example.Vartaalap.DTO.TagDTO;
+import com.example.Vartaalap.Repository.ArticleRepository;
 import com.example.Vartaalap.Service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,5 +96,15 @@ public class ArticleController {
     public ArticleDTO removeArticleLikes(@RequestParam int articleId,
                                          @RequestBody List<LikesDTO> likes){
         return articleService.removeArticleLikes(articleId,likes);
+    }
+
+    @GetMapping(path = "/withtag/{tag}")
+    public List<ArticleDTO> findByTag(@PathVariable String tag){
+        return articleService.findByTag(tag);
+    }
+
+    @GetMapping(path = "/likedby/{userId}")
+    public List<ArticleDTO> findByTag(@PathVariable int userId){
+        return articleService.findByUserId(userId);
     }
 }
