@@ -4,8 +4,9 @@ package com.example.Vartaalap.Controller;
 import com.example.Vartaalap.DTO.ArticleDTO;
 import com.example.Vartaalap.DTO.LikesDTO;
 import com.example.Vartaalap.DTO.TagDTO;
-import com.example.Vartaalap.Repository.ArticleRepository;
 import com.example.Vartaalap.Service.ArticleService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -86,7 +87,7 @@ public class ArticleController {
         return articleService.updateArticleTags(articleId,tags);
     }
 
-    @PutMapping(path = "/addlikes")
+    @PostMapping(path = "/addlikes")
     public ArticleDTO addArticleLikes(@RequestParam int articleId,
                                       @RequestBody List<LikesDTO> likes){
         return articleService.addArticleLikes(articleId,likes);
