@@ -1,11 +1,11 @@
 package com.example.Vartaalap.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Entity
@@ -18,11 +18,15 @@ public class CommentDTO {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "userid", nullable = false)
-    private long userId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserDTO userDTO;
 
-    @Column(name = "articleid", nullable = false)
-    private long articleId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "article_id", nullable = false)
+    private ArticleDTO articleDTO;
 
     @Column(name = "parent_comment_id")
     private long parentCommentId;

@@ -23,25 +23,27 @@ public class LikesDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "userId")
-    private int userId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserDTO userDTO;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "article_number")
-    ArticleDTO articleDTO;
+    @JoinColumn(name = "article_number", nullable = false)
+    private ArticleDTO articleDTO;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LikesDTO likesDTO = (LikesDTO) o;
-        return userId == likesDTO.userId;
+        return this.getUserDTO().getUserId() == likesDTO.getUserDTO().getUserId() && this.getArticleDTO().getArticleId() == likesDTO.getArticleDTO().getArticleId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId);
+        return Objects.hash(this.getUserDTO().getUserId());
     }
 
 }

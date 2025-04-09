@@ -1,5 +1,6 @@
 package com.example.Vartaalap.Controller;
 
+import com.example.Vartaalap.DTO.UserDTO;
 import com.example.Vartaalap.Service.FollowRelationsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,12 @@ public class FollowRelationsController {
     }
 
     @GetMapping(path = "/followersof")
-    public List<Integer> findFollowers(@RequestParam int userId){
+    public List<UserDTO> findFollowers(@RequestParam int userId){
         return followRelationsService.findFollowers(userId);
     }
 
     @GetMapping(path = "/followingto")
-    public List<Integer> findFollowing(@RequestParam int userId){
+    public List<UserDTO> findFollowing(@RequestParam int userId){
         return followRelationsService.findWhoIsBeingFollowed(userId);
     }
 

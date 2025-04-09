@@ -35,20 +35,27 @@ public class ArticleDTO {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "articleDTO", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = false)
-    List<TagDTO> tags;
+    private List<TagDTO> tags;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "articleDTO", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<LikesDTO> likes;
+    private List<LikesDTO> likes;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "articleDTO", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookmarkedDTO> bookmarks = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "articleDTO", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentDTO> comments = new ArrayList<>();
 
 
     public ArticleDTO(){}
 
     @PrePersist
     void preInsert() {
-        if (this.publishedDate == null)
-            this.publishedDate = LocalDateTime.now();
+        if (this.getPublishedDate() == null)
+            this.setPublishedDate(LocalDateTime.now());
         this.setLikes(new ArrayList<>());
     }
 }

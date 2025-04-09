@@ -1,6 +1,7 @@
 package com.example.Vartaalap.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,11 +14,16 @@ public class BookmarkedDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id", nullable = false)
-    private int userId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserDTO userDTO;
 
-    @Column(name = "article_id", nullable = false)
-    private int articleId;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private ArticleDTO articleDTO;
+
 
     public BookmarkedDTO(){}
 }

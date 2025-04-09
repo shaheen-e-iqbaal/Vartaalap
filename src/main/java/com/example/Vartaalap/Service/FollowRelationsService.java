@@ -2,7 +2,10 @@ package com.example.Vartaalap.Service;
 
 
 import com.example.Vartaalap.DTO.FollowRelationsDTO;
+import com.example.Vartaalap.DTO.UserDTO;
 import com.example.Vartaalap.Repository.FollowRelationsRepository;
+import com.example.Vartaalap.Repository.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,18 +20,18 @@ public class FollowRelationsService {
         this.followRelationsRepository = followRelationsRepository;
     }
 
-    public List<Integer> findFollowers(int userId){
+    public List<UserDTO> findFollowers(int userId){
         List<FollowRelationsDTO> resp = followRelationsRepository.findByWhoIsBeingFollowed(userId);
-        List<Integer> ans = new ArrayList<>();
+        List<UserDTO> ans = new ArrayList<>();
         for(var i : resp){
             ans.add(i.getWhoIsFollowing());
         }
         return ans;
     }
 
-    public List<Integer> findWhoIsBeingFollowed(int userId){
+    public List<UserDTO> findWhoIsBeingFollowed(int userId){
         List<FollowRelationsDTO> resp = followRelationsRepository.findByWhoIsFollowing(userId);
-        List<Integer> ans = new ArrayList<>();
+        List<UserDTO> ans = new ArrayList<>();
         for(var i : resp){
             ans.add(i.getWhoIsBeingFollowed());
         }
