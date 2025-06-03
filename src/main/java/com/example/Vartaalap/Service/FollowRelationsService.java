@@ -1,11 +1,9 @@
 package com.example.Vartaalap.Service;
 
-
-import com.example.Vartaalap.DTO.FollowRelationsDTO;
-import com.example.Vartaalap.DTO.UserDTO;
+import com.example.Vartaalap.Models.FollowRelations;
+import com.example.Vartaalap.Models.User;
 import com.example.Vartaalap.Repository.FollowRelationsRepository;
 import com.example.Vartaalap.Repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,49 +12,70 @@ import java.util.List;
 @Service
 public class FollowRelationsService {
 
-    FollowRelationsRepository followRelationsRepository;
+    private final FollowRelationsRepository followRelationsRepository;
+    private final UserRepository userRepository;
 
-    public FollowRelationsService(FollowRelationsRepository followRelationsRepository){
+    public FollowRelationsService(FollowRelationsRepository followRelationsRepository, UserRepository userRepository) {
         this.followRelationsRepository = followRelationsRepository;
+        this.userRepository = userRepository;
     }
 
-    public List<UserDTO> findFollowers(int userId){
-        List<FollowRelationsDTO> resp = followRelationsRepository.findByWhoIsBeingFollowed(userId);
-        List<UserDTO> ans = new ArrayList<>();
-        for(var i : resp){
-            ans.add(i.getWhoIsFollowing());
+    public List<User> findFollowers(int userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) return new ArrayList<>();
+
+        List<FollowRelations> followers = followRelationsRepository.findByWhoIsBeingFollowed(user);
+        List<User> result = new ArrayList<>();
+        for (FollowRelations relation : followers) {
+            result.add(relation.getWhoIsFollowing());
         }
-        return ans;
+        return result;
     }
 
-    public List<UserDTO> findWhoIsBeingFollowed(int userId){
-        List<FollowRelationsDTO> resp = followRelationsRepository.findByWhoIsFollowing(userId);
-        List<UserDTO> ans = new ArrayList<>();
-        for(var i : resp){
-            ans.add(i.getWhoIsBeingFollowed());
+    public List<User> findFollowing(int userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) return new ArrayList<>();
+
+        List<FollowRelations> following = followRelationsRepository.findByWhoIsFollowing(user);
+        List<User> result = new ArrayList<>();
+        for (FollowRelations relation : following) {
+            result.add(relation.getWhoIsBeingFollowed());
         }
-        return ans;
+        return result;
     }
 
-    public Boolean isFollowing(int whoIsFollowing, int whoIsBeingFollowed){
-        int sz = followRelationsRepository.findByWhoIsFollowingAndWhoIsBeingFollowed(whoIsFollowing,whoIsBeingFollowed).size();
-        return sz == 1;
+    public boolean isFollowing(int whoIsFollowingId, int whoIsBeingFollowedId) {
+        return !followRelationsRepository.findByWhoIsFollowingUserIdAndWhoIsBeingFollowedUserId(whoIsFollowingId, whoIsBeingFollowedId).isEmpty();
     }
 
-    public String follow (int whoIsFollowing, int whoIsBeingFollowed){
-        boolean check = isFollowing(whoIsFollowing, whoIsBeingFollowed);
-        if(check)return "Already Following";
-        followRelationsRepository.follow(whoIsFollowing, whoIsBeingFollowed);
+    public String follow(int whoIsFollowingId, int whoIsBeingFollowedId) {
+        if (isFollowing(whoIsFollowingId, whoIsBeingFollowedId)) {
+            return "Already Following";
+        }
+
+        User follower = userRepository.findByUserId(whoIsFollowingId);
+        User following = userRepository.findByUserId(whoIsBeingFollowedId);
+        if (follower == null || following == null) return "Invalid User(s)";
+
+
+        FollowRelations relation = new FollowRelations();
+        relation.setWhoIsFollowing(follower);
+        relation.setWhoIsBeingFollowed(following);
+
+        followRelationsRepository.save(relation);
         return "Successfully Followed";
-
     }
 
-    public String unFollow(int whoIsFollowing, int whoIsBeingFollowed){
-        if(isFollowing(whoIsFollowing, whoIsBeingFollowed)){
-            followRelationsRepository.deleteByWhoIsFollowingAndWhoIsBeingFollowed(whoIsFollowing, whoIsBeingFollowed);
-            return "Successfully Unfollowed";
+    public String unfollow(int whoIsFollowingId, int whoIsBeingFollowedId) {
+        if (!isFollowing(whoIsFollowingId, whoIsBeingFollowedId)) {
+            return "Already Not Following";
         }
-        return "Already Not following";
-    }
 
+        User follower = userRepository.findByUserId(whoIsFollowingId);
+        User following = userRepository.findByUserId(whoIsBeingFollowedId);
+        if (follower == null || following == null) return "Invalid User(s)";
+
+        followRelationsRepository.deleteByWhoIsFollowingAndWhoIsBeingFollowed(follower, following);
+        return "Successfully Unfollowed";
+    }
 }

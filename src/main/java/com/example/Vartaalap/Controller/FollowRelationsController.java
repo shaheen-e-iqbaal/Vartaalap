@@ -1,6 +1,6 @@
 package com.example.Vartaalap.Controller;
 
-import com.example.Vartaalap.DTO.UserDTO;
+import com.example.Vartaalap.Models.User;
 import com.example.Vartaalap.Service.FollowRelationsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,13 @@ public class FollowRelationsController {
     }
 
     @GetMapping(path = "/followersof")
-    public List<UserDTO> findFollowers(@RequestParam int userId){
+    public List<User> findFollowers(@RequestParam int userId){
         return followRelationsService.findFollowers(userId);
     }
 
     @GetMapping(path = "/followingto")
-    public List<UserDTO> findFollowing(@RequestParam int userId){
-        return followRelationsService.findWhoIsBeingFollowed(userId);
+    public List<User> findFollowing(@RequestParam int userId){
+        return followRelationsService.findFollowing(userId);
     }
 
     @PostMapping(path = "/follow")
@@ -35,7 +35,7 @@ public class FollowRelationsController {
     @PostMapping(path = "/unfollow")
     public String unFollow(@RequestParam int whoIsFollowing,
                            @RequestParam int whoIsBeingFollowed){
-        return followRelationsService.unFollow(whoIsFollowing, whoIsBeingFollowed);
+        return followRelationsService.unfollow(whoIsFollowing, whoIsBeingFollowed);
     }
 
 }

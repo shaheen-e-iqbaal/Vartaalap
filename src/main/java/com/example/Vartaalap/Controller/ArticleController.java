@@ -1,111 +1,96 @@
 package com.example.Vartaalap.Controller;
 
-
-import com.example.Vartaalap.DTO.ArticleDTO;
-import com.example.Vartaalap.DTO.LikesDTO;
-import com.example.Vartaalap.DTO.TagDTO;
+import com.example.Vartaalap.Models.Article;
+import com.example.Vartaalap.Models.Comment;
+import com.example.Vartaalap.Models.Tag;
 import com.example.Vartaalap.Service.ArticleService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
-@RequestMapping(path = "/article")
+@RequestMapping(path = "/article", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ArticleController {
 
-    ArticleService articleService;
-    public ArticleController(ArticleService articleService){
+    private final ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
-    @PostMapping(path = "/save")
-    public ArticleDTO save (@RequestBody ArticleDTO articleDTO){
-        return articleService.save(articleDTO);
+    // ---------- Create / Update ----------
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Article saveArticle(@RequestBody Article article) {
+        return articleService.save(article);
     }
 
-    //Method to get Article by articleId
-    @GetMapping(path = "/{articleId}")
-    public ArticleDTO findByAtricleId(@PathVariable int articleId){
-        return articleService.findByArticleId(articleId);
+    @PutMapping("/update")
+    public Article updateArticle(@RequestParam int articleId, @RequestBody Article article) {
+        article.setArticleId(articleId);
+        return articleService.save(article);
     }
 
-    //Method to get Article by authorId
-    @GetMapping
-    public List<ArticleDTO> findByAuthorId(@RequestParam int authorId){
+    @PutMapping("/updatetags")
+    public Optional<Article> updateTags(@RequestParam int articleId, @RequestBody Set<Tag> tags) {
+        return articleService.updateArticleTags(articleId, tags);
+    }
+
+    // ---------- Read ----------
+    @GetMapping("/{articleId}")
+    public ResponseEntity<?> getArticleById(@PathVariable int articleId) {
+        Optional<Article> article = articleService.findByArticleId(articleId);
+        if(!article.isPresent()){
+            return ResponseEntity.status(404).body("No Article present with id = " + articleId);
+        }
+        return ResponseEntity.status(200).body(article.get());
+    }
+
+    @GetMapping("/author")
+    public List<Article> getArticlesByAuthor(@RequestParam int authorId) {
         return articleService.findByAuthorId(authorId);
     }
 
-    //Method to get Article by published Date;
-    @GetMapping(path = "/publishedon")
-    public  List<ArticleDTO> findByPublishedDate(@RequestParam Date  date){
+    @GetMapping("/published")
+    public List<Article> getArticlesByPublishedDate(@RequestParam LocalDateTime date) {
         return articleService.findByPublishedDate(date);
     }
 
-    //Method to get Articles by title;
-    @GetMapping(path = "/withtitle")
-    public List<ArticleDTO> findByTitle(@RequestParam String title){
-        return articleService.findByTitle(title.toLowerCase());
+    @GetMapping("/title")
+    public List<Article> getArticlesByTitle(@RequestParam String title) {
+        return articleService.findByTitle(title);
     }
 
-    //Method to get Articles by ispremiumrequired and authorId
-    @GetMapping(path = "authorandpremium")
-    public List<ArticleDTO> findByAuthorIdAndPremiumRequired(@RequestParam int authorId,
-                                                             @RequestParam boolean premiumRequired){
+    @GetMapping("/author/premium")
+    public List<Article> getByAuthorAndPremium(@RequestParam int authorId,
+                                               @RequestParam boolean premiumRequired) {
         return articleService.findByAuthorIdAndPremiumRequired(authorId, premiumRequired);
     }
 
-    @GetMapping(path = "/getall")
-    public List<ArticleDTO> findAll(){
-        return articleService.findAll();
-    }
-
-
-    //MEPPING TO UPDATE ARTICLE CONTENT, TITLE, PREMIUM_REQUIRED AND TO DELETE THE ARTICLE
-
-    @PutMapping(path = "update")
-    public ArticleDTO updateArticle(@RequestParam int articleId,
-                                    @RequestBody ArticleDTO articleDTO){
-        articleDTO.setArticleId(articleId);
-        return articleService.save(articleDTO);
-    }
-
-    @DeleteMapping(path = "delete")
-    public String deleteArticle(@RequestParam int articleId){
-        articleService.deleteByArticleId(articleId);
-        return "Deleted Successfully";
-    }
-
-
-    //Method to update Artilces Tags, likes
-
-    @PutMapping(path = "/updatetags")
-    public ArticleDTO updateArticleTags(@RequestParam int articleId,
-                                        @RequestBody List<TagDTO> tags){
-        return articleService.updateArticleTags(articleId,tags);
-    }
-
-    @PostMapping(path = "/addlikes")
-    public ArticleDTO addArticleLikes(@RequestParam int articleId,
-                                      @RequestBody List<LikesDTO> likes){
-        return articleService.addArticleLikes(articleId,likes);
-    }
-
-    @PutMapping(path = "/removelikes")
-    public ArticleDTO removeArticleLikes(@RequestParam int articleId,
-                                         @RequestBody List<LikesDTO> likes){
-        return articleService.removeArticleLikes(articleId,likes);
-    }
-
-    @GetMapping(path = "/withtag/{tag}")
-    public List<ArticleDTO> findByTag(@PathVariable String tag){
+    @GetMapping("/tag/{tag}")
+    public List<Article> getArticlesByTag(@PathVariable String tag) {
         return articleService.findByTag(tag);
     }
 
-    @GetMapping(path = "/likedby/{userId}")
-    public List<ArticleDTO> findByTag(@PathVariable int userId){
-        return articleService.findByUserId(userId);
+    @GetMapping("/all")
+    public List<Article> getAllArticles() {
+        return articleService.findAll();
+    }
+
+    @GetMapping("/comments/{articleId}")
+    public List<Comment> getCommentsForArticle(@PathVariable long articleId) {
+        return articleService.getComments(articleId);
+    }
+
+    // ---------- Delete ----------
+    @DeleteMapping("/delete")
+    public String deleteArticle(@RequestParam int articleId) {
+        articleService.deleteByArticleId(articleId);
+        return "Deleted Successfully";
     }
 }

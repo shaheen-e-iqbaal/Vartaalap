@@ -1,13 +1,13 @@
 package com.example.Vartaalap.Repository;
 
-import com.example.Vartaalap.DTO.ArticleDTO;
-import com.example.Vartaalap.DTO.LikesDTO;
+import com.example.Vartaalap.Models.Likes;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LikesRepository extends JpaRepository<LikesDTO, Long> {
+public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     //Method to get articled liked by User
-    List<LikesDTO> findByUserId(int userId);
+    Likes findByUserUserIdAndArticleArticleId(int userId, int articleId);
+    List<Likes> findByUserUserId(int userId);
 }

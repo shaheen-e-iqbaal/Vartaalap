@@ -1,54 +1,66 @@
 package com.example.Vartaalap.Controller;
 
-import com.example.Vartaalap.DTO.CommentDTO;
+import com.example.Vartaalap.Models.Comment;
 import com.example.Vartaalap.Service.CommentService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/comment")
+@RequestMapping("/comment")
 public class CommentController {
 
-    CommentService commentService;
+    private final CommentService commentService;
 
-    CommentController(CommentService commentService){
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
-    @PostMapping(path = "/create")
-    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO){
-        return ResponseEntity.status(HttpStatus.valueOf(500)).body(commentService.createComment(commentDTO));
+    // Create a new comment
+    @PostMapping("/create")
+    public ResponseEntity<Comment> createComment(@RequestParam int userId,
+                                                 @RequestParam int articleId,
+                                                 @RequestParam String content,
+                                                 @RequestParam(defaultValue = "-1") long parentCommentId) {
+        Comment createdComment = commentService.createComment(userId, articleId, content, parentCommentId);
+        return ResponseEntity.ok(createdComment);
     }
 
-    @GetMapping(path = "/getcomment/{commentId}")
-    public ResponseEntity<CommentDTO> findCommentByCommentId(@PathVariable int commentId){
-        return ResponseEntity.ok().body(commentService.findByCommentId(commentId));
+    // Get a comment by ID
+    @GetMapping("/{commentId}")
+    public ResponseEntity<Comment> findByCommentId(@PathVariable long commentId) {
+        return ResponseEntity.ok(commentService.findByCommentId(commentId));
     }
 
-    @PutMapping(path = "/update/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO commentDTO,
-                                                    @PathVariable long commentId){
-        commentDTO.setCommentId(commentId);
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(commentService.updateComment(commentDTO));
+    // Update comment content
+    @PutMapping("/update/{commentId}")
+    public ResponseEntity<Comment> updateComment(@PathVariable long commentId,
+                                                 @RequestParam String newContent) {
+        return ResponseEntity.ok(commentService.updateComment(commentId, newContent));
     }
 
-    @DeleteMapping(path = "/delete/{commentId}")
-    public ResponseEntity<CommentDTO> deleteComment(@PathVariable int commentId){
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(commentService.deleteComment(commentId));
+    // Soft delete a comment
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<Comment> deleteComment(@PathVariable long commentId) {
+        return ResponseEntity.ok(commentService.deleteComment(commentId));
     }
 
-    @GetMapping(path = "/getchildcomments")
-    public ResponseEntity<List<CommentDTO>> findByParentCommentId(@RequestParam long parentCommentId){
-        return ResponseEntity.ok().body(commentService.getAllChildComments(parentCommentId));
+    // Get all child comments for a parent comment
+    @GetMapping("/child")
+    public ResponseEntity<List<Comment>> getAllChildComments(@RequestParam long parentCommentId) {
+        return ResponseEntity.ok(commentService.getAllChildComments(parentCommentId));
     }
 
-    @GetMapping(path = "getmycomments/{userId}")
-    public ResponseEntity<List<CommentDTO>> findByUserId(@PathVariable long userId){
-        return ResponseEntity.ok().body(commentService.findByUserId(userId));
+    // Get all comments made by a specific user
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Comment>> getCommentsByUserId(@PathVariable long userId) {
+        return ResponseEntity.ok(commentService.findByUserId(userId));
     }
 
+    // Get all root comments of an article
+    @GetMapping("/article/{articleId}")
+    public ResponseEntity<List<Comment>> getCommentsByArticleId(@PathVariable long articleId) {
+        return ResponseEntity.ok(commentService.findByArticleId(articleId));
+    }
 }

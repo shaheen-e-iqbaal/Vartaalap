@@ -1,20 +1,14 @@
 package com.example.Vartaalap.Repository;
 
-import com.example.Vartaalap.DTO.UserDTO;
+import com.example.Vartaalap.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserDTO, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    //@Query("select userId from UserDTO where emailId = :emailId and password = :password")
-    public List<UserDTO> findByEmailIdAndPassword(String emailId, String password);
+    User findByUserId(int userId);
 
-    public List<UserDTO> findByEmailIdOrPassword(String emailId, String password);
-
-    //@Query(value = "select u from UserDTO u where u.userId = :userId")
-    public List<UserDTO> findByUserId(int userId);
-
-    public List<UserDTO> findAll();
-
+    Optional<User> findByEmailId(String emailId); // ✅ Needed for Spring Security login
 }

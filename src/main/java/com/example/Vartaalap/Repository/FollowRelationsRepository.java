@@ -1,33 +1,23 @@
 package com.example.Vartaalap.Repository;
 
-import com.example.Vartaalap.DTO.FollowRelationsDTO;
+import com.example.Vartaalap.Models.FollowRelations;
+import com.example.Vartaalap.Models.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface FollowRelationsRepository extends JpaRepository<FollowRelationsDTO, Long> {
+public interface FollowRelationsRepository extends JpaRepository<FollowRelations, Long> {
 
-    //Method to find followers of User with id = userId
-    public List<FollowRelationsDTO> findByWhoIsBeingFollowed(int userId);
+    List<FollowRelations> findByWhoIsBeingFollowed(User user);
 
-    //Method to find who the user with id = UserId is following
-    public List<FollowRelationsDTO> findByWhoIsFollowing(int userId);
+    List<FollowRelations> findByWhoIsFollowing(User user);
 
-    //Method to check that whoIsFollowing already follows whoIsBeingFollowed or not
-    public List<FollowRelationsDTO> findByWhoIsFollowingAndWhoIsBeingFollowed(int whoIsFollowing, int whoIsBeingFollowed);
+    List<FollowRelations> findByWhoIsFollowingUserIdAndWhoIsBeingFollowedUserId(int userId1, int userId2);
 
-    //Method to add Record in a table
+
     @Modifying
     @Transactional
-    @Query(value = "insert into FollowRelationsDTO (who_is_following, who_is_being_followed) values (:whoIsFollowing, :whoIsBeingFollowed)", nativeQuery = true)
-    public void follow(int whoIsFollowing, int  whoIsBeingFollowed);
-
-
-    //Method to unfollow
-    @Modifying
-    @Transactional
-    public void deleteByWhoIsFollowingAndWhoIsBeingFollowed(int whoIsFollowing, int whoIsBeingFollowed);
+    void deleteByWhoIsFollowingAndWhoIsBeingFollowed(User whoIsFollowing, User whoIsBeingFollowed);
 }
