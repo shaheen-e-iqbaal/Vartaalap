@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private boolean isSubscribed;
 
     @Column(name = "role", nullable = false)
-    private String role = "ROLE_USER"; // default role
+    private String role = "USER";
 
     @JsonManagedReference(value = "user-likes")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

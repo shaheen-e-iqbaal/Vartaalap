@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
 
         // Encode the password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setRole("ROLE_" + user.getRole());
         return userRepository.save(user);
     }
 
@@ -63,8 +63,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmailId(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-        System.out.println("Matches? " + passwordEncoder.matches("securePassword123", user.getPassword()));
-        // You can add roles/authorities here
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(
                 user.getEmailId(),

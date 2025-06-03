@@ -4,6 +4,7 @@ import com.example.Vartaalap.Models.Article;
 import com.example.Vartaalap.Models.User;
 import com.example.Vartaalap.Service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class UserController {
     }
 
     // ✅ Get user by ID
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable int userId) {
         User user = userService.findUserById(userId);
@@ -43,12 +45,14 @@ public class UserController {
     // ❌ Removed manual login endpoint — Spring Security handles login
 
     // ✅ Get all users
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.findAll();
     }
 
     // ✅ Get liked articles by user
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{userId}/likes")
     public Set<Article> getUserLikes(@PathVariable int userId) {
         return userService.getLike(userId);

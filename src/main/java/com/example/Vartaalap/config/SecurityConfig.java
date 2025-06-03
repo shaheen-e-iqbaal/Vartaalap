@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,12 +24,15 @@ import org.springframework.session.web.context.AbstractHttpSessionApplicationIni
 import java.io.IOException;
 
 @Configuration
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends AbstractHttpSessionApplicationInitializer {
 
     private final UserService userService;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public SecurityConfig(@Lazy UserService userService) {
+    public SecurityConfig(@Lazy UserService userService, CustomAccessDeniedHandler accessDeniedHandler) {
         this.userService = userService;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -68,6 +72,9 @@ public class SecurityConfig extends AbstractHttpSessionApplicationInitializer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/register", "/login").permitAll()
                         .anyRequest().authenticated()
+                ).
+                exceptionHandling(exception -> exception
+                    .accessDeniedHandler(accessDeniedHandler) // 👈 custom handler
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/login")      // POST /login with username & password (form parameters)
