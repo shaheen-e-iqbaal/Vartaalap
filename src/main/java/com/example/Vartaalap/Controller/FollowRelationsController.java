@@ -12,29 +12,27 @@ public class FollowRelationsController {
 
     FollowRelationsService followRelationsService;
 
-    public FollowRelationsController(FollowRelationsService followRelationsService){
+    public FollowRelationsController(FollowRelationsService followRelationsService) {
         this.followRelationsService = followRelationsService;
     }
 
     @GetMapping(path = "/followersof")
-    public List<User> findFollowers(@RequestParam int userId){
+    public List<User> findFollowers(@RequestParam int userId) {
         return followRelationsService.findFollowers(userId);
     }
 
     @GetMapping(path = "/followingto")
-    public List<User> findFollowing(@RequestParam int userId){
+    public List<User> findFollowing(@RequestParam int userId) {
         return followRelationsService.findFollowing(userId);
     }
 
     @PostMapping(path = "/follow")
-    public String follow(@RequestParam int whoIsFollowing,
-                         @RequestParam int whoIsBeingFollowed){
+    public String follow(@RequestParam int whoIsFollowing, @RequestParam int whoIsBeingFollowed) {
         return followRelationsService.follow(whoIsFollowing, whoIsBeingFollowed);
     }
 
     @PostMapping(path = "/unfollow")
-    public String unFollow(@RequestParam int whoIsFollowing,
-                           @RequestParam int whoIsBeingFollowed){
+    public String unFollow(@RequestParam int whoIsFollowing, @RequestParam int whoIsBeingFollowed) {
         return followRelationsService.unfollow(whoIsFollowing, whoIsBeingFollowed);
     }
 

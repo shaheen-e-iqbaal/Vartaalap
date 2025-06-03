@@ -36,26 +36,19 @@ public class Comment {
     @Column(name = "createdon")
     private LocalDateTime createdOn;
 
-//    @Override
-//    public int hashCode(){
-//        return Objects.hash(this.getArticleDTO().getArticleId());
-//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        if (this.getArticle().getArticleId() == comment.getCommentId() &&
-                comment.getUser().getUserId() == this.getUser().getUserId()) return true;
-        return false;
+        return this.getArticle().getArticleId() == comment.getCommentId() && comment.getUser().getUserId() == this.getUser().getUserId();
     }
 
 
     @PrePersist
-    void preInsert(){
-        if(this.createdOn == null)
-        this.createdOn = LocalDateTime.now();
+    void preInsert() {
+        if (this.createdOn == null) this.createdOn = LocalDateTime.now();
     }
 
 }

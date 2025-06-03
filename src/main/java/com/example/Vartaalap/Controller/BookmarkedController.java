@@ -25,7 +25,6 @@ public class BookmarkedController {
     }
 
 
-    // Or use this more RESTful DELETE version
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping
     public String deleteBookmark(@RequestParam int userId, @RequestParam int articleId) {

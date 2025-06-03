@@ -3,8 +3,8 @@ package com.example.Vartaalap.Service;
 import com.example.Vartaalap.Models.Article;
 import com.example.Vartaalap.Models.Bookmark;
 import com.example.Vartaalap.Models.User;
-import com.example.Vartaalap.Repository.BookmarkedRepository;
 import com.example.Vartaalap.Repository.ArticleRepository;
+import com.example.Vartaalap.Repository.BookmarkedRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,7 @@ public class BookmarkedService {
     private final UserService userService;
     private final ArticleRepository articleRepository;
 
-    public BookmarkedService(BookmarkedRepository bookmarkedRepository, UserService userService,
-                             ArticleRepository articleRepository) {
+    public BookmarkedService(BookmarkedRepository bookmarkedRepository, UserService userService, ArticleRepository articleRepository) {
         this.bookmarkedRepository = bookmarkedRepository;
         this.userService = userService;
         this.articleRepository = articleRepository;
@@ -53,9 +52,7 @@ public class BookmarkedService {
     // Get all bookmarked articles (DTOs) for a user
     public List<Article> findBookmarkedArticlesByUserId(int userId) {
         List<Bookmark> bookmarks = bookmarkedRepository.findByUserUserId(userId);
-        return bookmarks.stream()
-                .map(Bookmark::getArticle)
-                .collect(Collectors.toList());
+        return bookmarks.stream().map(Bookmark::getArticle).collect(Collectors.toList());
     }
 
     // Check if an article is already bookmarked by user

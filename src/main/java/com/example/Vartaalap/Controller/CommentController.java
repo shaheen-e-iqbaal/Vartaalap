@@ -21,10 +21,7 @@ public class CommentController {
     // Create a new comment
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/create")
-    public ResponseEntity<Comment> createComment(@RequestParam int userId,
-                                                 @RequestParam int articleId,
-                                                 @RequestParam String content,
-                                                 @RequestParam(defaultValue = "-1") long parentCommentId) {
+    public ResponseEntity<Comment> createComment(@RequestParam int userId, @RequestParam int articleId, @RequestParam String content, @RequestParam(defaultValue = "-1") long parentCommentId) {
         Comment createdComment = commentService.createComment(userId, articleId, content, parentCommentId);
         return ResponseEntity.ok(createdComment);
     }
@@ -39,8 +36,7 @@ public class CommentController {
     // Update comment content
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/update/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable long commentId,
-                                                 @RequestParam String newContent) {
+    public ResponseEntity<Comment> updateComment(@PathVariable long commentId, @RequestParam String newContent) {
         return ResponseEntity.ok(commentService.updateComment(commentId, newContent));
     }
 

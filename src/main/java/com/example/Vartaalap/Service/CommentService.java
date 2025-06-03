@@ -17,9 +17,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public CommentService(CommentRepository commentRepository,
-                          UserRepository userRepository,
-                          ArticleRepository articleRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, ArticleRepository articleRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
@@ -75,7 +73,7 @@ public class CommentService {
         return commentRepository.findByUserUserId((int) userId);
     }
 
-    public List<Comment> findByArticleId(long articleId){
+    public List<Comment> findByArticleId(long articleId) {
         return commentRepository.findByArticleArticleIdAndParentCommentId(articleId, -1);
     }
 }

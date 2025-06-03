@@ -9,5 +9,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     //Method to get articled liked by User
     Likes findByUserUserIdAndArticleArticleId(int userId, int articleId);
+
     List<Likes> findByUserUserId(int userId);
 }

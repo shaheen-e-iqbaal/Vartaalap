@@ -61,7 +61,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public User() {}
+    public User() {
+    }
 
     // Spring Security - UserDetails implementation
     @Override

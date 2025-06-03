@@ -23,10 +23,9 @@ public class Tag {
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
-//    @Override
-//    public int hashCode(){
-//        return Objects.hash(this.getArticleDTO().getArticleId());
-//    }
+
+    public Tag() {
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,6 +34,4 @@ public class Tag {
         Tag tag = (Tag) o;
         return this.getArticle().getArticleId() == tag.getArticle().getArticleId() && this.getTag() == tag.getTag();
     }
-
-    public Tag(){}
 }

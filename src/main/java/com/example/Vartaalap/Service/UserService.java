@@ -3,10 +3,13 @@ package com.example.Vartaalap.Service;
 import com.example.Vartaalap.Models.Article;
 import com.example.Vartaalap.Models.Likes;
 import com.example.Vartaalap.Models.User;
-import com.example.Vartaalap.Repository.*;
+import com.example.Vartaalap.Repository.LikesRepository;
+import com.example.Vartaalap.Repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +22,7 @@ public class UserService implements UserDetailsService {
     private final LikesRepository likesRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository,
-                       LikesRepository likesRepository,
-                       PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, LikesRepository likesRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.likesRepository = likesRepository;
         this.passwordEncoder = passwordEncoder;
@@ -61,14 +62,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmailId(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        User user = userRepository.findByEmailId(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmailId(),
-                user.getPassword(),
-                authorities
-        );
+        return new org.springframework.security.core.userdetails.User(user.getEmailId(), user.getPassword(), authorities);
     }
 
     public Optional<User> findByEmailId(String email) {

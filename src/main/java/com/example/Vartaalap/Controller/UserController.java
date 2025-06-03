@@ -42,7 +42,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // ❌ Removed manual login endpoint — Spring Security handles login
 
     // ✅ Get all users
     @PreAuthorize("hasRole('ADMIN')")

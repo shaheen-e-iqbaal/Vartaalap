@@ -3,8 +3,6 @@ package com.example.Vartaalap.config;
 import com.example.Vartaalap.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSessionEvent;
-import jakarta.servlet.http.HttpSessionListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -49,9 +47,7 @@ public class SecurityConfig extends AbstractHttpSessionApplicationInitializer {
         // Custom failure handler to return HTTP 401 with message on login failure
         SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler() {
             @Override
-            public void onAuthenticationFailure(HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                org.springframework.security.core.AuthenticationException exception) throws IOException {
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException exception) throws IOException {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
                 response.getWriter().write("{\"error\": \"Invalid username or password\"}");
@@ -67,32 +63,9 @@ public class SecurityConfig extends AbstractHttpSessionApplicationInitializer {
             response.getWriter().flush();
         };
 
-        http
-                .csrf(csrf -> csrf.disable())  // Disable CSRF for simplicity in API testing (optional but recommended for APIs)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/register", "/login").permitAll()
-                        .anyRequest().authenticated()
-                ).
-                exceptionHandling(exception -> exception
-                    .accessDeniedHandler(accessDeniedHandler) // 👈 custom handler
-                )
-                .formLogin(form -> form
-                        .loginProcessingUrl("/login")      // POST /login with username & password (form parameters)
-                        .successHandler(successHandler)
-                        .failureHandler(failureHandler)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessHandler(logoutSuccessHandler)
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
-                )
-                .sessionManagement(session -> session
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false)
-                );
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers("/user/register", "/login").permitAll().anyRequest().authenticated()).exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler) // 👈 custom handler
+        ).formLogin(form -> form.loginProcessingUrl("/login")      // POST /login with username & password (form parameters)
+                .successHandler(successHandler).failureHandler(failureHandler).permitAll()).logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler(logoutSuccessHandler).invalidateHttpSession(true).deleteCookies("JSESSIONID").permitAll()).sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(false));
 
         return http.build();
     }

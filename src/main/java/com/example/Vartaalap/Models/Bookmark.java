@@ -24,22 +24,15 @@ public class Bookmark {
     @JoinColumn(name = "article_id")
     private Article article;
 
-//    @Override
-//    public int hashCode(){
-//        return Objects.hash(this.getArticleDTO().hashCode());
-//    }
+
+    public Bookmark() {
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bookmark bookmark = (Bookmark) o;
-        if (this.getArticle().getArticleId() == bookmark.getArticle().getArticleId() &&
-                this.getUser().getUserId() == bookmark.getUser().getUserId()) return true;
-        return false;
+        return this.getArticle().getArticleId() == bookmark.getArticle().getArticleId() && this.getUser().getUserId() == bookmark.getUser().getUserId();
     }
-
-
-
-    public Bookmark(){}
 }

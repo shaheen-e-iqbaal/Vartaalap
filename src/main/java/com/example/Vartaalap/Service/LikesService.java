@@ -16,9 +16,7 @@ public class LikesService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
-    public LikesService(LikesRepository likesRepository,
-                       UserRepository userRepository,
-                       ArticleRepository articleRepository) {
+    public LikesService(LikesRepository likesRepository, UserRepository userRepository, ArticleRepository articleRepository) {
         this.likesRepository = likesRepository;
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;

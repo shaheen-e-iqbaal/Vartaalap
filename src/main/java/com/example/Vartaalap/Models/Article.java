@@ -4,8 +4,10 @@ package com.example.Vartaalap.Models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -49,17 +51,17 @@ public class Article {
     private Set<Comment> comments = new HashSet<>();
 
 
-    public Article(){}
+    public Article() {
+    }
 
     @PrePersist
     void preInsert() {
-        if (this.getPublishedDate() == null)
-            this.setPublishedDate(LocalDateTime.now());
+        if (this.getPublishedDate() == null) this.setPublishedDate(LocalDateTime.now());
         this.setLikes(new HashSet<>());
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return this.getTitle().hashCode();
     }
 
@@ -68,9 +70,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        if (article.getAuthorId() == this.getAuthorId() && article.getTitle().hashCode() == this.getTitle().hashCode())
-            return true;
-        return false;
+        return article.getAuthorId() == this.getAuthorId() && article.getTitle().hashCode() == this.getTitle().hashCode();
     }
 
 

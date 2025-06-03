@@ -25,27 +25,20 @@ public class FollowRelations {
     private User whoIsBeingFollowed;
 
 
-    public FollowRelations(){}
+    public FollowRelations() {
+    }
 
-//    @Override
-//    public int hashCode(){
-//        return Objects.hash(this.getWhoIsFollowing().getUserId());
-//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FollowRelations followRelations = (FollowRelations) o;
-        if (this.getWhoIsFollowing().getUserId() == followRelations.getWhoIsFollowing().getUserId() &&
-                this.getWhoIsBeingFollowed().getUserId() == followRelations.getWhoIsBeingFollowed().getUserId())
-            return true;
-        return false;
+        return this.getWhoIsFollowing().getUserId() == followRelations.getWhoIsFollowing().getUserId() && this.getWhoIsBeingFollowed().getUserId() == followRelations.getWhoIsBeingFollowed().getUserId();
     }
 
 
-
-    public String toString(){
+    public String toString() {
         return id + " " + whoIsFollowing + " " + whoIsBeingFollowed;
     }
 }

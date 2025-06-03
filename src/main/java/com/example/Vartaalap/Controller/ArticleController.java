@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +49,7 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public ResponseEntity<?> getArticleById(@PathVariable int articleId) {
         Optional<Article> article = articleService.findByArticleId(articleId);
-        if(!article.isPresent()){
+        if (!article.isPresent()) {
             return ResponseEntity.status(404).body("No Article present with id = " + articleId);
         }
         return ResponseEntity.status(200).body(article.get());
@@ -76,8 +75,7 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/author/premium")
-    public List<Article> getByAuthorAndPremium(@RequestParam int authorId,
-                                               @RequestParam boolean premiumRequired) {
+    public List<Article> getByAuthorAndPremium(@RequestParam int authorId, @RequestParam boolean premiumRequired) {
         return articleService.findByAuthorIdAndPremiumRequired(authorId, premiumRequired);
     }
 
