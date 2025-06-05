@@ -25,7 +25,7 @@ public class ArticleController {
     }
 
     // ---------- Create / Update ----------
-    @PreAuthorize("hasRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Article saveArticle(@RequestBody Article article) {
         return articleService.save(article);

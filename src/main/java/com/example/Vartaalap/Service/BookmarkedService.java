@@ -26,8 +26,9 @@ public class BookmarkedService {
 
     @Transactional
     public String addBookmark(int userId, int articleId) {
-        if (bookmarkedRepository.findByUserUserIdAndArticleArticleId(userId, articleId) != null)
+        if (bookmarkedRepository.findByUserUserIdAndArticleArticleId(userId, articleId).isPresent()){
             return "Already bookmarked";
+        }
 
         User user = userService.findUserById(userId);
         Article article = articleRepository.findByArticleId(articleId).get();

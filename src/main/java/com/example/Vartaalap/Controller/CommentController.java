@@ -62,7 +62,7 @@ public class CommentController {
     }
 
     // Get all root comments of an article
-    @PreAuthorize("hasRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/article/{articleId}")
     public ResponseEntity<List<Comment>> getCommentsByArticleId(@PathVariable long articleId) {
         return ResponseEntity.ok(commentService.findByArticleId(articleId));
